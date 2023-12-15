@@ -1,7 +1,8 @@
 import OpenAI from "openai";
 import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import "bootstrap/dist/css/bootstrap.min.css";
-import '../ChatinputStyles.css';
+import "../ChatinputStyles.css";
 import {
   Button,
   InputGroup,
@@ -99,7 +100,11 @@ const Chatinput = () => {
                   message.role === "user" ? "user-message" : "ai-message"
                 }
               >
-                {message.content}
+                {message.role === "system" ? (
+                  <ReactMarkdown>{message.content}</ReactMarkdown>
+                ) : (
+                  message.content
+                )}
               </div>
             ))}
           </div>
