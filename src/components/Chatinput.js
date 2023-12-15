@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import '../ChatinputStyles.css';
 import {
   Button,
   InputGroup,
@@ -17,7 +18,7 @@ const openai = new OpenAI({
 
 const Chatinput = () => {
   const [inputText, setInputText] = useState("");
-  const [conversation, setConversation] = useState([]); 
+  const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleResponse = async () => {
@@ -47,11 +48,15 @@ const Chatinput = () => {
         role: "system",
         content: completion.choices[0].message.content,
       };
-      setConversation([...conversation, userMessage, aiMessage]); 
+      setConversation([...conversation, userMessage, aiMessage]);
       setInputText("");
     } catch (error) {
       console.error("Error during response:", error);
-      setConversation([...conversation, userMessage, { role: "system", content: "Error during response." }]);
+      setConversation([
+        ...conversation,
+        userMessage,
+        { role: "system", content: "Error during response." },
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -62,7 +67,10 @@ const Chatinput = () => {
       <Row className="justify-content-center">
         <Col md={6}>
           <h1>Orthopedic Advisor</h1>
-          <h6>Decribe your injury or ask advice on treatments, but always follow up with a physical examination!</h6>
+          <h6>
+            Decribe your injury or ask advice on treatments, but always follow
+            up with a physical examination!
+          </h6>
           <InputGroup className="mb-3">
             <FormControl
               as="textarea"
@@ -75,13 +83,22 @@ const Chatinput = () => {
             />
           </InputGroup>
 
-          <Button onClick={handleResponse} disabled={isLoading} className="mb-3 w-100">
+          <Button
+            onClick={handleResponse}
+            disabled={isLoading}
+            className="mb-3 w-100"
+          >
             {isLoading ? "Loading..." : "Submit"}
           </Button>
 
           <div className="conversation-output mt-3">
             {conversation.map((message, index) => (
-              <div key={index} className={message.role === "user" ? "user-message" : "ai-message"}>
+              <div
+                key={index}
+                className={
+                  message.role === "user" ? "user-message" : "ai-message"
+                }
+              >
                 {message.content}
               </div>
             ))}
