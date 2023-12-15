@@ -63,6 +63,11 @@ const Chatinput = () => {
     }
   };
 
+  const handleReset = () => {
+    setInputText('');
+    setConversation([])
+  }
+
   return (
     <Container className="p-4">
       <Row className="justify-content-center">
@@ -107,6 +112,11 @@ const Chatinput = () => {
           >
             {isLoading ? "Loading..." : "Submit"}
           </Button>
+
+          <Button onClick={handleReset} className="mb-3 w-100" variant="danger">
+            Reset Chat
+          </Button>
+
           </div>
         </Col>
       </Row>
