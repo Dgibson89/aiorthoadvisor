@@ -1,0 +1,15 @@
+.user-message {
+    background-color: #007bff; /* Blue background for user messages */
+    color: white; /* White text for better readability */
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+  }
+  
+  .ai-message {
+    background-color: #006400; /* Darker green background for AI messages */
+    color: white; /* White text for better readability */
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+  }
