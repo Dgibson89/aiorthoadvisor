@@ -67,11 +67,27 @@ const Chatinput = () => {
     <Container className="p-4">
       <Row className="justify-content-center">
         <Col md={6}>
-          <h1>Orthopedic Advisor</h1>
-          <h6>
-            Decribe your injury or ask advice on treatments, but always follow
-            up with a physical examination!
-          </h6>
+              <h1>Orthopedic Advisor</h1>
+              <h6>
+                Decribe your injury or ask advice on treatments, but always follow
+                up with a physical examination!
+              </h6>
+
+          <div className="conversation-output mt-3">
+            {conversation.map((message, index) => (
+              <div
+                key={index}
+                className={
+                  message.role === "user" ? "user-message" : "ai-message"
+                }
+              >
+                {message.role === "system" ? (
+                  <ReactMarkdown>{message.content}</ReactMarkdown>
+                ) : (
+                  message.content
+                )}
+              </div>
+            ))}
           <InputGroup className="mb-3">
             <FormControl
               as="textarea"
@@ -91,22 +107,6 @@ const Chatinput = () => {
           >
             {isLoading ? "Loading..." : "Submit"}
           </Button>
-
-          <div className="conversation-output mt-3">
-            {conversation.map((message, index) => (
-              <div
-                key={index}
-                className={
-                  message.role === "user" ? "user-message" : "ai-message"
-                }
-              >
-                {message.role === "system" ? (
-                  <ReactMarkdown>{message.content}</ReactMarkdown>
-                ) : (
-                  message.content
-                )}
-              </div>
-            ))}
           </div>
         </Col>
       </Row>
