@@ -87,6 +87,7 @@ const Chatinput = () => {
             {conversation.map((message, index) => (
               <div
                 key={index}
+                ref={index === conversation.length - 1 ? endOfMessagesRef : null}
                 className={
                   message.role === "user" ? "user-message" : "ai-message"
                 }
