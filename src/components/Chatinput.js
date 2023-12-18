@@ -63,31 +63,33 @@ const Chatinput = () => {
       setIsLoading(false);
     }
   };
-
+  
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [conversation]);
-
+  
   const handleReset = () => {
-    setInputText('');
-    setConversation([])
-  }
+    setInputText("");
+    setConversation([]);
+  };
 
   return (
     <Container className="p-4">
       <Row className="justify-content-center">
         <Col md={6}>
-              <h1>Orthopedic Advisor</h1>
-              <h6>
-                Decribe your injury or ask advice on treatments, but always follow
-                up with a physical examination!
-              </h6>
+          <h1>Orthopedic Advisor</h1>
+          <h6>
+            Decribe your injury or ask advice on treatments, but always follow
+            up with a physical examination!
+          </h6>
 
           <div className="conversation-output mt-3">
             {conversation.map((message, index) => (
               <div
                 key={index}
-                ref={index === conversation.length - 1 ? endOfMessagesRef : null}
+                ref={
+                  index === conversation.length - 1 ? endOfMessagesRef : null
+                }
                 className={
                   message.role === "user" ? "user-message" : "ai-message"
                 }
@@ -99,30 +101,33 @@ const Chatinput = () => {
                 )}
               </div>
             ))}
-          <InputGroup className="mb-3">
-            <FormControl
-              as="textarea"
-              placeholder="Enter your question here"
-              aria-label="Text input"
-              value={inputText}
-              style={{ resize: "none" }}
-              rows={4}
-              onChange={(e) => setInputText(e.target.value)}
-            />
-          </InputGroup>
+            <InputGroup className="mb-3">
+              <FormControl
+                as="textarea"
+                placeholder="Enter your question here"
+                aria-label="Text input"
+                value={inputText}
+                style={{ resize: "none" }}
+                rows={4}
+                onChange={(e) => setInputText(e.target.value)}
+              />
+            </InputGroup>
 
-          <Button
-            onClick={handleResponse}
-            disabled={isLoading}
-            className="mb-3 w-100"
-          >
-            {isLoading ? "Loading..." : "Submit"}
-          </Button>
+            <Button
+              onClick={handleResponse}
+              disabled={isLoading}
+              className="mb-3 w-100"
+            >
+              {isLoading ? "Loading..." : "Submit"}
+            </Button>
 
-          <Button onClick={handleReset} className="mb-3 w-100" variant="danger">
-            Reset Chat
-          </Button>
-
+            <Button
+              onClick={handleReset}
+              className="mb-3 w-100"
+              variant="danger"
+            >
+              Reset Chat
+            </Button>
           </div>
         </Col>
       </Row>
