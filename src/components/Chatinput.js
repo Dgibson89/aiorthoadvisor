@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../ChatinputStyles.css";
@@ -21,6 +21,7 @@ const Chatinput = () => {
   const [inputText, setInputText] = useState("");
   const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const endOfMessagesRef = useRef(null);
 
   const handleResponse = async () => {
     setIsLoading(true);
@@ -62,6 +63,10 @@ const Chatinput = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [conversation]);
 
   const handleReset = () => {
     setInputText('');
