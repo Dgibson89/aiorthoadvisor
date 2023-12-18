@@ -21,7 +21,7 @@ const Chatinput = () => {
   const [inputText, setInputText] = useState("");
   const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const endOfMessagesRef = useRef(null);
+  const inputAreaRef = useRef(null);
 
   const handleResponse = async () => {
     setIsLoading(true);
@@ -63,9 +63,9 @@ const Chatinput = () => {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
-    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+    inputAreaRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [conversation]);
   
   const handleReset = () => {
@@ -87,9 +87,6 @@ const Chatinput = () => {
             {conversation.map((message, index) => (
               <div
                 key={index}
-                ref={
-                  index === conversation.length - 1 ? endOfMessagesRef : null
-                }
                 className={
                   message.role === "user" ? "user-message" : "ai-message"
                 }
@@ -101,7 +98,7 @@ const Chatinput = () => {
                 )}
               </div>
             ))}
-            <InputGroup className="mb-3">
+            <InputGroup className="mb-3" ref={inputAreaRef}>
               <FormControl
                 as="textarea"
                 placeholder="Enter your question here"
