@@ -1,16 +1,10 @@
 import OpenAI from "openai";
 import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
+import ChatInputField from "./ChatInputField";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../ChatinputStyles.css";
-import {
-  Button,
-  InputGroup,
-  FormControl,
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 const openai = new OpenAI({
   dangerouslyAllowBrowser: true,
@@ -18,7 +12,6 @@ const openai = new OpenAI({
 });
 
 const Chatinput = () => {
-  const [inputText, setInputText] = useState("");
   const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const endOfMessagesRef = useRef(null);
@@ -62,8 +55,7 @@ const Chatinput = () => {
     } finally {
       setIsLoading(false);
     }
-  }
-
+  };
 
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
