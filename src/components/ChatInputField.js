@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { InputGroup, FormControl, Button } from 'react-bootstrap';
+import React, { useState } from "react";
+import { InputGroup, FormControl, Button } from "react-bootstrap";
 
-const ChatInputField = ({ onSendMessage }) => {
+const ChatInputField = ({ onSendMessage, onReset, isLoading }) => {
   const [inputText, setInputText] = useState("");
 
   const handleInputChange = (e) => {
@@ -12,6 +12,8 @@ const ChatInputField = ({ onSendMessage }) => {
     onSendMessage(inputText);
     setInputText(""); // Reset the input field after sending
   };
+
+
 
   return (
     <>
@@ -26,8 +28,11 @@ const ChatInputField = ({ onSendMessage }) => {
           rows={4}
         />
       </InputGroup>
-      <Button onClick={handleSend} className="mb-3 w-100">
+      <Button onClick={handleSend} className="mb-3 w-100" disabled={isLoading}>
         Submit
+      </Button>
+      <Button onClick={onReset} className="mb-3 w-100" variant="danger">
+        Reset Chat
       </Button>
     </>
   );
