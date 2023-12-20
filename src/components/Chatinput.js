@@ -62,7 +62,8 @@ const Chatinput = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }
+
 
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
