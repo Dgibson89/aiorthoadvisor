@@ -16,11 +16,11 @@ const Chatinput = () => {
   const [isLoading, setIsLoading] = useState(false);
   const endOfMessagesRef = useRef(null);
 
-  const handleResponse = async () => {
+  const handleNewMessage = async (newMessage) => {
     setIsLoading(true);
     const userMessage = {
       role: "user",
-      content: inputText,
+      content: newMessage,
     };
     setConversation([...conversation, userMessage]); // Add user message to conversation
 
@@ -32,7 +32,7 @@ const Chatinput = () => {
           {
             role: "system",
             content:
-              "You are an AI Doctor with a warm and empathetic communication style, possessing extensive knowledge in orthopedics, podiatry, and general healthcare. Your responses are tailored to provide preliminary advice on a variety of common orthopedic issues, offering specific suggestions like the R.I.C.E. (Rest, Ice, Compression, Elevation) method or other appropriate care techniques when relevant. You understand the importance of appropriate and immediate care for recent injuries to prevent further harm, and you share guidance that can be safely followed until a physician can be seen. Your advice is given confidently and affirmatively, yet you always gently remind the user that this guidance is preliminary and cannot replace the personalized diagnosis and treatment plan that a face-to-face consultation with a qualified healthcare professional can provide. You encourage users to see an appropriate healthcare provider, based on their specific situation.",
+              "As an AI Healthcare Consultant, you are equipped with comprehensive expertise in orthopedics, podiatry, and general healthcare. Your communication is characterized by professionalism, warmth, and empathy. You are adept at offering initial guidance on a broad spectrum of orthopedic concerns, skillfully recommending specific interventions such as the R.I.C.E. (Rest, Ice, Compression, Elevation) method or other pertinent care strategies as applicable. Your insights underscore the criticality of timely and proper care for recent injuries to mitigate further complications. In providing advice, you exude confidence and decisiveness, while simultaneously emphasizing that your guidance serves as a preliminary recommendation and not a substitute for a personalized diagnosis and treatment plan, which can only be ascertained through an in-person consultation with a credentialed healthcare professional. You consistently advocate for consultation with an appropriate medical specialist, tailored to the unique needs of each inquiry. Your responses are concise and to the point, elaborating further only upon request. To enhance the accuracy and specificity of your advice, you actively solicit additional details regarding injuries or health issues when necessary information is lacking.",
           },
           ...conversation,
           userMessage,
@@ -44,7 +44,6 @@ const Chatinput = () => {
         content: completion.choices[0].message.content,
       };
       setConversation([...conversation, userMessage, aiMessage]);
-      setInputText("");
     } catch (error) {
       console.error("Error during response:", error);
       setConversation([
@@ -62,26 +61,28 @@ const Chatinput = () => {
   }, [conversation]);
 
   const handleReset = () => {
-    setInputText("");
     setConversation([]);
+    setIsLoading(false);
   };
 
   return (
-    <Container className="p-4">
-      <Row className="justify-content-center">
-        <Col md={6}>
+    <Container className="p-4 chat-container">
+      <Row className="justify-content-center conversation-output">
+        <div md={6}>
           <h1>Orthopedic Advisor</h1>
           <h6>
-            Decribe your injury or ask advice on treatments, but always follow
+            Describe your injury or ask advice on treatments, but always follow
             up with a physical examination!
           </h6>
-
           <div className="conversation-output mt-3">
             {conversation.map((message, index) => (
-              <div
+              <Col
                 key={index}
+                md={12}
                 ref={
-                  index === conversation.length - 1 ? endOfMessagesRef : null
+                  index === conversation.length - 1 && !isLoading
+                    ? endOfMessagesRef
+                    : null
                 }
                 className={
                   message.role === "user" ? "user-message" : "ai-message"
@@ -92,36 +93,23 @@ const Chatinput = () => {
                 ) : (
                   message.content
                 )}
-              </div>
+              </Col>
             ))}
-            <InputGroup className="mb-3">
-              <FormControl
-                as="textarea"
-                placeholder="Enter your question here"
-                aria-label="Text input"
-                value={inputText}
-                style={{ resize: "none" }}
-                rows={4}
-                onChange={(e) => setInputText(e.target.value)}
-              />
-            </InputGroup>
-
-            <Button
-              onClick={handleResponse}
-              disabled={isLoading}
-              className="mb-3 w-100"
-            >
-              {isLoading ? "Loading..." : "Submit"}
-            </Button>
-
-            <Button
-              onClick={handleReset}
-              className="mb-3 w-100"
-              variant="danger"
-            >
-              Reset Chat
-            </Button>
+            {isLoading && (
+              <div className="loading-message" ref={endOfMessagesRef}>
+                <b> Retrieving response...</b>
+              </div>
+            )}
           </div>
+        </div>
+      </Row>
+      <Row className="chat-input">
+        <Col md={12}>
+          <ChatInputField
+            onSendMessage={handleNewMessage}
+            onReset={handleReset}
+            isLoading={isLoading}
+          />
         </Col>
       </Row>
     </Container>
