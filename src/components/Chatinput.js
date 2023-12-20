@@ -1,7 +1,8 @@
 import OpenAI from "openai";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
 import "bootstrap/dist/css/bootstrap.min.css";
-import '../ChatinputStyles.css';
+import "../ChatinputStyles.css";
 import {
   Button,
   InputGroup,
@@ -20,6 +21,7 @@ const Chatinput = () => {
   const [inputText, setInputText] = useState("");
   const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const endOfMessagesRef = useRef(null);
 
   const handleResponse = async () => {
     setIsLoading(true);
@@ -60,6 +62,16 @@ const Chatinput = () => {
     } finally {
       setIsLoading(false);
     }
+  }
+
+
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [conversation]);
+
+  const handleReset = () => {
+    setInputText("");
+    setConversation([]);
   };
 
   return (
@@ -71,37 +83,52 @@ const Chatinput = () => {
             Decribe your injury or ask advice on treatments, but always follow
             up with a physical examination!
           </h6>
-          <InputGroup className="mb-3">
-            <FormControl
-              as="textarea"
-              placeholder="Enter your question here"
-              aria-label="Text input"
-              value={inputText}
-              style={{ resize: "none" }}
-              rows={4}
-              onChange={(e) => setInputText(e.target.value)}
-            />
-          </InputGroup>
-
-          <Button
-            onClick={handleResponse}
-            disabled={isLoading}
-            className="mb-3 w-100"
-          >
-            {isLoading ? "Loading..." : "Submit"}
-          </Button>
 
           <div className="conversation-output mt-3">
             {conversation.map((message, index) => (
               <div
                 key={index}
+                ref={
+                  index === conversation.length - 1 ? endOfMessagesRef : null
+                }
                 className={
                   message.role === "user" ? "user-message" : "ai-message"
                 }
               >
-                {message.content}
+                {message.role === "system" ? (
+                  <ReactMarkdown>{message.content}</ReactMarkdown>
+                ) : (
+                  message.content
+                )}
               </div>
             ))}
+            <InputGroup className="mb-3">
+              <FormControl
+                as="textarea"
+                placeholder="Enter your question here"
+                aria-label="Text input"
+                value={inputText}
+                style={{ resize: "none" }}
+                rows={4}
+                onChange={(e) => setInputText(e.target.value)}
+              />
+            </InputGroup>
+
+            <Button
+              onClick={handleResponse}
+              disabled={isLoading}
+              className="mb-3 w-100"
+            >
+              {isLoading ? "Loading..." : "Submit"}
+            </Button>
+
+            <Button
+              onClick={handleReset}
+              className="mb-3 w-100"
+              variant="danger"
+            >
+              Reset Chat
+            </Button>
           </div>
         </Col>
       </Row>
