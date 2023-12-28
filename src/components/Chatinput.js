@@ -27,6 +27,7 @@ const Chatinput = () => {
     try {
       const completion = await openai.chat.completions.create({
         model: "gpt-4",
+        frequency_penalty: 0.5,
         temperature: 1,
         messages: [
           {
