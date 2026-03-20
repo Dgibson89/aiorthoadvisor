@@ -1,4 +1,3 @@
-import OpenAI from "openai";
 import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import ChatInputField from "./ChatInputField";
@@ -6,51 +5,56 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../ChatinputStyles.css";
 import { Container, Row, Col } from "react-bootstrap";
 
-const openai = new OpenAI({
-  dangerouslyAllowBrowser: true,
-  apiKey: process.env.REACT_APP_OPENAI_API_KEY,
-});
-
-const Chatinput = () => {
+const ChatInput = () => {
   const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const endOfMessagesRef = useRef(null);
 
   const handleNewMessage = async (newMessage) => {
+    if (!newMessage.trim() || isLoading) return;
+
     setIsLoading(true);
+
     const userMessage = {
       role: "user",
       content: newMessage,
     };
-    setConversation([...conversation, userMessage]); // Add user message to conversation
+
+    setConversation((prev) => [...prev, userMessage]);
 
     try {
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4",
-        frequency_penalty: 0.5,
-        temperature: 1,
-        messages: [
-          {
-            role: "system",
-            content:
-              "As an AI Healthcare Consultant, you are equipped with comprehensive expertise in orthopedics, podiatry, and general healthcare. Your communication is characterized by professionalism, warmth, and empathy. You are adept at offering initial guidance on a broad spectrum of orthopedic concerns, skillfully recommending specific interventions such as the R.I.C.E. (Rest, Ice, Compression, Elevation) method or other pertinent care strategies as applicable. Your insights underscore the criticality of timely and proper care for recent injuries to mitigate further complications. In providing advice, you exude confidence and decisiveness, while simultaneously emphasizing that your guidance serves as a preliminary recommendation and not a substitute for a personalized diagnosis and treatment plan, which can only be ascertained through an in-person consultation with a credentialed healthcare professional. You consistently advocate for consultation with an appropriate medical specialist, tailored to the unique needs of each inquiry. Your responses are concise and to the point, elaborating further only upon request. To enhance the accuracy and specificity of your advice, you actively solicit additional details regarding injuries or health issues when necessary information is lacking.",
-          },
-          ...conversation,
-          userMessage,
-        ],
+      const response = await fetch("http://localhost:5000/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          conversation,
+          newMessage,
+        }),
       });
 
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Request failed");
+      }
+
       const aiMessage = {
-        role: "system",
-        content: completion.choices[0].message.content,
+        role: "assistant",
+        content: data.reply,
       };
-      setConversation([...conversation, userMessage, aiMessage]);
+
+      setConversation((prev) => [...prev, aiMessage]);
     } catch (error) {
       console.error("Error during response:", error);
-      setConversation([
-        ...conversation,
-        userMessage,
-        { role: "system", content: "Error during response." },
+
+      setConversation((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "Something went wrong. Please try again.",
+        },
       ]);
     } finally {
       setIsLoading(false);
@@ -59,7 +63,7 @@ const Chatinput = () => {
 
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [conversation]);
+  }, [conversation, isLoading]);
 
   const handleReset = () => {
     setConversation([]);
@@ -68,13 +72,14 @@ const Chatinput = () => {
 
   return (
     <Container className="p-4 chat-container">
-      <Row className="justify-content-center conversation-output">
-        <div md={6}>
+      <Row className="justify-content-center">
+        <Col md={6}>
           <h1>Orthopedic Advisor</h1>
           <h6>
             Describe your injury or ask advice on treatments, but always follow
             up with a physical examination!
           </h6>
+
           <div className="conversation-output mt-3">
             {conversation.map((message, index) => (
               <Col
@@ -89,21 +94,23 @@ const Chatinput = () => {
                   message.role === "user" ? "user-message" : "ai-message"
                 }
               >
-                {message.role === "system" ? (
+                {message.role === "assistant" ? (
                   <ReactMarkdown>{message.content}</ReactMarkdown>
                 ) : (
                   message.content
                 )}
               </Col>
             ))}
+
             {isLoading && (
               <div className="loading-message" ref={endOfMessagesRef}>
-                <b> Retrieving response...</b>
+                <b>Retrieving response...</b>
               </div>
             )}
           </div>
-        </div>
+        </Col>
       </Row>
+
       <Row className="chat-input">
         <Col md={12}>
           <ChatInputField
@@ -117,4 +124,4 @@ const Chatinput = () => {
   );
 };
 
-export default Chatinput;
+export default ChatInput;

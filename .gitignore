@@ -22,3 +22,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Backend
+backend/node_modules
+
+# Backend env
+backend/.env

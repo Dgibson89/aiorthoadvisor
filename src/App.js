@@ -1,10 +1,10 @@
 import "./App.css";
-import Chatinput from "./components/Chatinput";
+import ChatInput from "./components/ChatInput";
 
 function App() {
   return (
     <div className="App">
-      <Chatinput />
+      <ChatInput />
     </div>
   );
 }
