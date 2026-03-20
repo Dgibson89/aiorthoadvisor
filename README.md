@@ -144,3 +144,4 @@ This application provides general health information and is **not a substitute f
 
 ✅ Fully functional  
 🔄 Actively improving  
+
