@@ -1,70 +1,146 @@
-# Getting Started with Create React App
+# 🦴 Orthopedic Advisor (AI-Powered)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack AI-powered healthcare assistant that provides general orthopedic guidance based on user input. This application helps users understand potential causes of pain and suggests basic care strategies, while emphasizing the importance of professional medical consultation.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+- 💬 Chat-based interface for user interaction  
+- 🧠 AI-generated responses using OpenAI  
+- 🔒 Secure backend API (no exposed API keys)  
+- ⚡ Real-time responses  
+- 🎨 Clean, responsive UI built with React + Bootstrap  
+- ♻️ Reset conversation functionality  
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🏗️ Architecture
 
-### `npm test`
+This project follows a **full-stack architecture**:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Frontend (React)
+- Handles UI and user interaction  
+- Sends user messages to backend via API  
 
-### `npm run build`
+### Backend (Node.js + Express)
+- Handles OpenAI API calls securely  
+- Manages environment variables and API keys  
+- Returns AI responses to frontend  
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🛠️ Tech Stack
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Frontend**
+- React  
+- Bootstrap  
+- React Markdown  
 
-### `npm run eject`
+**Backend**
+- Node.js  
+- Express  
+- OpenAI SDK  
+- dotenv  
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## ⚙️ Installation & Setup
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 1. Clone the repository
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+git clone https://github.com/Dgibson89/aiorthoadvisor.git
+cd aiorthoadvisor
+```
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 2. Install frontend dependencies
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm install
+```
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 3. Install backend dependencies
 
-### Analyzing the Bundle Size
+```bash
+cd backend
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+### 4. Set up environment variables
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Create a `.env` file inside the **backend folder**:
 
-### Advanced Configuration
+```env
+OPENAI_API_KEY=your_api_key_here
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+### 5. Run the backend server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+cd backend
+npm run dev
+```
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 6. Run the frontend
+
+In a new terminal:
+
+```bash
+npm start
+```
+
+---
+
+## 🧪 Example Usage
+
+**User input:**
+```
+Foot pain
+```
+
+**AI response includes:**
+- Possible causes (injury, overuse, inflammation)  
+- Suggested care (rest, ice, compression, elevation)  
+- Recommendation to consult a specialist  
+
+---
+
+## ⚠️ Disclaimer
+
+This application provides general health information and is **not a substitute for professional medical advice, diagnosis, or treatment**.
+
+---
+
+## 📈 Future Improvements
+
+- Add typing animation for AI responses  
+- Improve UI (chat bubbles, avatars)  
+- Add conversation history persistence  
+- Deploy backend and frontend  
+- Enhance response structure (sections like Causes, Treatment, etc.)  
+
+---
+
+## 👨‍💻 Author
+
+**Donovan Gibson**  
+
+- GitHub: https://github.com/Dgibson89  
+
+---
+
+## ⭐ Project Status
+
+✅ Fully functional  
+🔄 Actively improving  
